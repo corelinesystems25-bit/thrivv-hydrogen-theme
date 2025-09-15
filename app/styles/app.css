@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Dancing+Script:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for Thrivv Premium theme */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply font-sans text-neutral-900 antialiased;
+    background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fff7ed 100%);
+    background-attachment: fixed;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-bold tracking-tight;
+  }
+  
+  h1 {
+    @apply text-5xl md:text-7xl lg:text-8xl;
+    background: linear-gradient(135deg, #ec4899, #f97316, #eab308);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  h2 {
+    @apply text-4xl md:text-5xl lg:text-6xl;
+  }
+  
+  h3 {
+    @apply text-3xl md:text-4xl;
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-neutral-100 rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #ec4899, #f97316);
+    @apply rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #db2777, #ea580c);
+  }
+}
+
+@layer components {
+  .glass-effect {
+    @apply bg-white/20 backdrop-blur-md border border-white/30;
+  }
+  
+  .luxury-card {
+    @apply bg-white/80 backdrop-blur-sm border border-white/50 shadow-luxury rounded-2xl;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .luxury-card:hover {
+    @apply shadow-glow-lg transform scale-105;
+  }
+  
+  .gradient-text {
+    background: linear-gradient(135deg, #ec4899, #f97316, #eab308);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .luxury-button {
+    @apply px-8 py-4 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-2xl shadow-premium;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .luxury-button:hover {
+    @apply shadow-glow transform scale-105;
+    background: linear-gradient(135deg, #db2777, #ea580c);
+  }
+  
+  .overlay {
+    @apply fixed inset-0 z-50 bg-black/50 backdrop-blur-sm;
+  }
+  
+  .overlay aside {
+    @apply fixed right-0 top-0 h-full w-96 bg-white/95 backdrop-blur-md shadow-luxury transform transition-transform border-l border-white/30;
+  }
+  
+  .overlay aside header {
+    @apply flex items-center justify-between p-6 border-b border-neutral-200/50;
+  }
+  
+  .overlay aside main {
+    @apply p-6 overflow-y-auto h-full;
+  }
+  
+  .close {
+    @apply text-3xl font-bold cursor-pointer hover:text-primary-600 transition-colors;
+  }
+  
+  .close-outside {
+    @apply absolute inset-0 cursor-pointer;
+  }
+  
+  .cart-line {
+    @apply flex gap-6 p-6 border-b border-neutral-200/50 luxury-card mb-4;
+  }
+  
+  .cart-line-quantiy {
+    @apply flex items-center gap-3 mt-3;
+  }
+  
+  .cart-summary-aside {
+    @apply p-6 border-t border-neutral-200/50 luxury-card;
+  }
+  
+  .cart-summary-page {
+    @apply p-8 luxury-card;
+  }
+  
+  .cart-subtotal {
+    @apply flex justify-between items-center text-lg font-semibold;
+  }
+  
+  .cart-discount {
+    @apply flex items-center gap-3 luxury-card p-3;
+  }
+  
+  .header-menu-desktop {
+    @apply hidden lg:block;
+  }
+  
+  .header-menu-mobile {
+    @apply block lg:hidden;
+  }
+  
+  .floating-element {
+    @apply animate-float;
+  }
+  
+  .shimmer-effect {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .shimmer-effect::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: shimmer 2s infinite;
+  }
+  
+  .premium-input {
+    @apply w-full px-6 py-4 bg-white/80 backdrop-blur-sm border border-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all;
+  }
+  
+  .section-padding {
+    @apply py-20 md:py-32 px-6 md:px-8;
+  }
+  
+  .container-luxury {
+    @apply max-w-7xl mx-auto;
+  }
+}
+
