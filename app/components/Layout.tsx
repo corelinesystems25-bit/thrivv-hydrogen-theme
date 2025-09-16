@@ -1,120 +1,120 @@
 import {Await} from '@remix-run/react';
 import {Suspense} from 'react';
-import type {
-  CartApiQueryFragment,
-  FooterQuery,
-  HeaderQuery,
-} from 'storefrontapi.generated';
-import {Aside} from '~/components/Aside';
+import {Header} from '~/components/Header';
 import {Footer} from '~/components/Footer';
-import {Header, HeaderMenu} from '~/components/Header';
-import {CartMain} from '~/components/Cart';
 
-export type LayoutProps = {
-  cart: Promise<CartApiQueryFragment | null>;
-  children?: React.ReactNode;
-  footer: Promise<FooterQuery>;
-  header: HeaderQuery;
-  isLoggedIn: boolean;
-  publicStoreDomain: string;
+export type CartLine = {
+  id: string;
+  quantity: number;
+  cost: {
+    totalAmount: {
+      amount: string;
+      currencyCode: string;
+    };
+  };
+  merchandise: {
+    id: string;
+    title: string;
+    product: {
+      handle: string;
+      title: string;
+    };
+    image?: {
+      url: string;
+      altText?: string | null;
+    } | null;
+  };
 };
 
-export function Layout({
-  cart,
-  children = null,
-  footer,
-  header,
-  isLoggedIn,
-  publicStoreDomain,
-}: LayoutProps) {
+export type CartWithLines = {
+  id: string;
+  checkoutUrl?: string | null;
+  totalQuantity: number;
+  cost: {
+    subtotalAmount: {
+      amount: string;
+      currencyCode: string;
+    };
+  };
+  lines: {
+    nodes: CartLine[];
+  };
+};
+
+export type ShopBasics = {
+  shop: {
+    name: string;
+    description?: string | null;
+    primaryDomain?: {
+      url: string;
+    } | null;
+  };
+};
+
+interface LayoutProps {
+  cart: Promise<CartWithLines | null>;
+  shop: Promise<ShopBasics>;
+  children: React.ReactNode;
+}
+
+export function Layout({cart, shop, children}: LayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col relative overflow-x-hidden">
-      {/* Background Elements */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent-500/10 rounded-full blur-3xl animate-float" style={{animationDelay: '3s'}}></div>
-        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-luxury-500/10 rounded-full blur-3xl animate-float" style={{animationDelay: '6s'}}></div>
-      </div>
-      
-      <CartAside cart={cart} />
-      <MobileMenuAside menu={header.menu} shop={header.shop} />
-      <SearchAside />
-      <Header header={header} cart={cart} isLoggedIn={isLoggedIn} publicStoreDomain={publicStoreDomain} />
-      <main className="flex-1 relative z-10">{children}</main>
-      <Suspense>
-        <Await resolve={footer}>
-          {(footer) => <Footer menu={footer.menu} shop={header.shop} />}
+    <div className="relative min-h-screen overflow-hidden bg-carbon-950">
+      <VisualChrome />
+      <Suspense fallback={<HeaderFallback />}>
+        <Await resolve={Promise.all([shop, cart])}>
+          {([shopData, cartData]) => (
+            <Header
+              brandName={shopData.shop.name}
+              tagline={shopData.shop.description ?? 'Luxury streetwear engineered for tomorrow.'}
+              cartQuantity={cartData?.totalQuantity ?? 0}
+            />
+          )}
+        </Await>
+      </Suspense>
+
+      <main className="relative z-10">{children}</main>
+
+      <Suspense fallback={<FooterFallback />}>
+        <Await resolve={shop}>
+          {(shopData) => <Footer brandName={shopData.shop.name} domain={shopData.shop.primaryDomain?.url} />}
         </Await>
       </Suspense>
     </div>
   );
 }
 
-function CartAside({cart}: {cart: LayoutProps['cart']}) {
+function VisualChrome() {
   return (
-    <Aside id="cart-aside" heading="CART">
-      <Suspense fallback={<p className="text-center py-8">Loading cart...</p>}>
-        <Await resolve={cart}>
-          {(cart) => {
-            return <CartMain cart={cart} layout="aside" />;
-          }}
-        </Await>
-      </Suspense>
-    </Aside>
+    <div className="pointer-events-none absolute inset-0 z-0">
+      <div className="absolute inset-x-0 top-[-30%] h-[480px] bg-hero-grid blur-3xl" />
+      <div className="absolute left-[10%] top-[45%] h-56 w-56 rounded-full bg-electric-500/20 blur-[150px]" />
+      <div className="absolute right-[5%] top-[65%] h-64 w-64 rounded-full bg-amber-400/20 blur-[160px]" />
+      <div className="absolute left-1/2 top-0 h-80 w-80 -translate-x-1/2 rounded-full bg-electric-300/10 blur-[180px]" />
+    </div>
   );
 }
 
-function MobileMenuAside({
-  menu,
-  shop,
-}: {
-  menu: HeaderQuery['menu'];
-  shop: HeaderQuery['shop'];
-}) {
+function HeaderFallback() {
   return (
-    <Aside id="mobile-menu-aside" heading="MENU">
-      <HeaderMenu
-        menu={menu}
-        viewport="mobile"
-        primaryDomainUrl={shop.primaryDomain.url}
-      />
-    </Aside>
-  );
-}
-
-function SearchAside() {
-  return (
-    <Aside id="search-aside" heading="SEARCH">
-      <div className="predictive-search">
-        <div className="space-y-4">
-          <input
-            name="q"
-            placeholder="Search products..."
-            type="search"
-            className="premium-input"
-          />
-          <button
-            type="submit"
-            className="luxury-button w-full"
-          >
-            Search
-          </button>
-        </div>
-        <div className="mt-8">
-          <h4 className="font-heading font-semibold mb-4">Popular Searches</h4>
-          <div className="flex flex-wrap gap-2">
-            {['Streetwear', 'Hoodies', 'Sneakers', 'Accessories'].map((term) => (
-              <button
-                key={term}
-                className="px-3 py-1 bg-neutral-100 hover:bg-primary-100 rounded-full text-sm transition-colors"
-              >
-                {term}
-              </button>
-            ))}
-          </div>
+    <header className="sticky top-0 z-20 border-b border-slate-800/60 bg-carbon-950/60 backdrop-blur">
+      <div className="section-shell flex h-20 items-center justify-between">
+        <div className="h-4 w-40 animate-pulse rounded-full bg-slate-800" />
+        <div className="flex gap-4">
+          <div className="h-3 w-16 animate-pulse rounded-full bg-slate-800" />
+          <div className="h-3 w-16 animate-pulse rounded-full bg-slate-800" />
         </div>
       </div>
-    </Aside>
+    </header>
   );
 }
 
+function FooterFallback() {
+  return (
+    <footer className="border-t border-slate-800/60 bg-carbon-900/80">
+      <div className="section-shell py-12">
+        <div className="h-4 w-32 animate-pulse rounded-full bg-slate-800" />
+      </div>
+    </footer>
+  );
+}
