@@ -1,4 +1,4 @@
-# Thrivv – Luxury Streetwear Hydrogen Theme
+# Thrivv – Luxury Streetwear Hydrogen Theme   
 
 Thrivv is a premium Shopify Hydrogen + Remix theme for culture-driven streetwear brands that fuse couture craftsmanship with futuristic technology. The experience is dark, cinematic, and community-first with hero drops, countdown hype, and immersive product storytelling.
 
