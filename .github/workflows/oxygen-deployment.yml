@@ -1,0 +1,36 @@
+name: Deploy to Shopify Oxygen
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Hydrogen app
+        run: npm run build
+        env:
+          SHOPIFY_STORE_ID: ${{ secrets.SHOPIFY_STORE_ID }}
+          SHOPIFY_STOREFRONT_API_TOKEN: ${{ secrets.SHOPIFY_STOREFRONT_API_TOKEN }}
+          PUBLIC_STORE_DOMAIN: ${{ secrets.PUBLIC_STORE_DOMAIN }}
+
+      - name: Deploy to Oxygen
+        env:
+          SHOPIFY_HYDROGEN_DEPLOYMENT_TOKEN: ${{ secrets.SHOPIFY_HYDROGEN_DEPLOYMENT_TOKEN }}
+        run: npx shopify hydrogen deploy

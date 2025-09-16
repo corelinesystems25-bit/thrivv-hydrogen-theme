@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    @apply scroll-smooth bg-carbon-950;
+  }
+
+  body {
+    @apply bg-carbon-950 text-slate-100 font-sans antialiased min-h-screen;
+  }
+
+  ::selection {
+    @apply bg-electric-500 text-carbon-950;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-electric-500 bg-electric-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-carbon-950 transition hover:-translate-y-0.5 hover:bg-electric-400 hover:shadow-neon;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-slate-600/60 bg-slate-900/40 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-200 transition hover:-translate-y-0.5 hover:border-electric-500 hover:text-electric-400 hover:shadow-inner;
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-2 rounded-full border border-slate-700/70 bg-slate-900/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-slate-300;
+  }
+
+  .card-panel {
+    @apply rounded-4xl border border-slate-800/70 bg-slate-900/60 p-8 shadow-lg shadow-black/20 backdrop-blur;
+  }
+
+  .section-shell {
+    @apply mx-auto w-full max-w-6xl px-6 sm:px-8 lg:px-12;
+  }
+}
+
+@layer utilities {
+  .gradient-border {
+    @apply relative overflow-hidden rounded-4xl;
+  }
+
+  .gradient-border::before {
+    content: '';
+    @apply absolute inset-0 -z-10 rounded-4xl bg-gradient-to-r from-electric-500 via-fuchsia-500 to-amber-400 opacity-60;
+  }
+}

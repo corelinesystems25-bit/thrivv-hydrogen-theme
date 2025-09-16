@@ -1,165 +1,73 @@
-# Thrivv - Premium Street Culture Shopify Hydrogen Theme
+# Thrivv – Luxury Streetwear Hydrogen Theme
 
-A luxury streetwear-inspired Shopify Hydrogen theme designed for brands that live at the intersection of culture and commerce.
+Thrivv is a premium Shopify Hydrogen + Remix theme for culture-driven streetwear brands that fuse couture craftsmanship with futuristic technology. The experience is dark, cinematic, and community-first with hero drops, countdown hype, and immersive product storytelling.
 
-## Features
+## Highlights
 
-- **Luxury Street Aesthetic**: Bold gradients, premium animations, and culture-forward design
-- **Premium Animations**: Floating elements, gradient animations, and smooth transitions
-- **Mobile-First**: Responsive design optimized for all devices
-- **Performance**: Built with Shopify Hydrogen for blazing-fast performance
-- **Customizable**: Extensive customization options for colors, fonts, and layouts
-- **Culture-Focused**: Designed specifically for streetwear, lifestyle, and culture brands
-- **SEO Optimized**: Built-in SEO best practices and performance optimization
+- **Hydrogen 2024.10 + Remix 2.8** foundation ready for Shopify Oxygen deployment
+- **TailwindCSS styling** with a carbon-neon palette, rounded silhouettes, and typography from Space Grotesk + IBM Plex
+- **Homepage** featuring a hero drop story, animated countdown timer, featured collection carousel, and drop preview grid
+- **Lookbook collections** presented as editorial masonry cards with hover motion and tag callouts
+- **Product detail page** showcasing rich media, variant selection, add-to-cart workflow, and community social proof
+- **About / Community page** with manifesto, community initiatives, and brand story modules
+- **Cart route** with session-backed checkout ready to hand off to Shopify checkout
 
-## Design Philosophy
+## Project Structure
 
-Thrivv represents the fusion of street culture and luxury commerce. Every element is designed to:
-- Celebrate authenticity and culture
-- Provide a premium shopping experience
-- Build community and movement
-- Showcase products as cultural statements
-
-## Tech Stack
-
-- **Shopify Hydrogen**: React-based framework for headless commerce
-- **Remix**: Full-stack web framework
-- **Tailwind CSS**: Utility-first CSS framework with custom luxury extensions
-- **TypeScript**: Type-safe development
-- **Framer Motion**: Advanced animations and interactions
-- **Lucide React**: Premium icon library
-
-## Color Palette
-
-- **Primary**: Pink gradient (#ec4899 to #db2777)
-- **Accent**: Orange gradient (#f97316 to #ea580c)
-- **Luxury**: Gold gradient (#eab308 to #ca8a04)
-- **Neutral**: Sophisticated grays for balance
-
-## Typography
-
-- **Headings**: Montserrat (Bold, modern sans-serif)
-- **Body**: Inter (Clean, readable sans-serif)
-- **Script**: Dancing Script (Elegant script for accents)
-- **Mono**: JetBrains Mono (Technical elements)
+```
+app/
+  components/        Reusable UI components (hero, carousel, countdown, layout)
+  routes/            Remix routes for home, collections, products, cart, about
+  graphql/           Shared GraphQL fragments & operations
+  styles/tailwind.css Tailwind layer definitions and component tokens
+  root.tsx           Global layout + streaming data
+```
 
 ## Getting Started
 
-1. Clone this repository
-2. Install dependencies:
+1. Install dependencies
    ```bash
    npm install
    ```
-3. Copy `.env.example` to `.env` and configure your Shopify store
-4. Start the development server:
+2. Copy your environment variables (Shopify storefront access token, domain, etc.) into `.env`
+3. Start the local development server
    ```bash
    npm run dev
    ```
 
-## Environment Variables
+### Essential Environment Variables
 
 ```
-NODE_ENV="development"
-SESSION_SECRET="your-session-secret"
-PUBLIC_STOREFRONT_API_TOKEN="your-storefront-api-token"
-PRIVATE_STOREFRONT_API_TOKEN="your-private-storefront-api-token"
-PUBLIC_STORE_DOMAIN="your-shop-name.myshopify.com"
-PUBLIC_STOREFRONT_ID="your-storefront-id"
+SHOPIFY_STORE_ID=
+SHOPIFY_STOREFRONT_API_TOKEN=
+PUBLIC_STORE_DOMAIN=
+FEATURED_COLLECTION_HANDLE=frontpage
+NEXT_DROP_DATE=2024-12-01T00:00:00Z
 ```
+
+## Scripts
+
+- `npm run dev` – Launches the Hydrogen dev server
+- `npm run build` – Creates the production build for Oxygen
+- `npm run preview` – Serves the built assets locally
+- `npm run lint` – Runs ESLint with Hydrogen rules
+- `npm run typecheck` – Validates TypeScript types
 
 ## Deployment
 
-### Shopify Oxygen (Recommended)
+The repository includes `.github/workflows/oxygen-deployment.yml` which builds with Node 20 and calls `shopify hydrogen deploy`. Configure the required Shopify secrets in your GitHub repository before triggering the workflow.
 
-1. Connect your GitHub repository to Shopify Oxygen
-2. Configure environment variables in Oxygen dashboard
-3. Deploy automatically on push to main branch
+## Design System
 
-### Alternative Platforms
+- **Colors** – Carbon blacks with electric teal and amber flares
+- **Typography** – Space Grotesk for headlines, IBM Plex Sans for body copy, IBM Plex Mono for technical accents
+- **Components** – Rounded gradient shells, neon glows, glassmorphism-inspired panels, and editorial grid layouts
+- **Utilities** – Tailwind component layer provides `btn-primary`, `btn-secondary`, `section-shell`, and pill badges for consistent layout spacing
 
-- Vercel
-- Netlify
-- Railway
-- Render
+## Shopify Data
 
-## Customization
-
-### Brand Colors
-
-Update the luxury color palette in `tailwind.config.js`:
-
-```js
-colors: {
-  primary: {
-    // Your brand's primary colors
-  },
-  accent: {
-    // Your brand's accent colors
-  },
-  luxury: {
-    // Your brand's luxury accent
-  }
-}
-```
-
-### Animations
-
-Customize animations in `tailwind.config.js`:
-
-```js
-animation: {
-  'custom-float': 'customFloat 6s ease-in-out infinite',
-  // Add your custom animations
-}
-```
-
-### Typography
-
-Update fonts in `app/styles/app.css`:
-
-```css
-@import url('https://fonts.googleapis.com/css2?family=YourFont');
-```
-
-## Components
-
-### Luxury Components
-- `luxury-card`: Premium card with glass morphism
-- `luxury-button`: Gradient button with glow effects
-- `gradient-text`: Multi-color gradient text
-- `glass-effect`: Backdrop blur and transparency
-
-### Layout Components
-- `Header`: Sticky navigation with glass effect
-- `Footer`: Rich footer with social links and newsletter
-- `Layout`: Main layout with floating background elements
-- `Aside`: Premium sidebar for cart and mobile menu
-
-## Performance
-
-- Optimized images with Shopify's CDN
-- Lazy loading for below-the-fold content
-- Minimal JavaScript bundle
-- CSS-only animations where possible
-- Progressive enhancement
-
-## Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-- Mobile browsers (iOS Safari, Chrome Mobile)
-
-## Contributing
-
-This is a proprietary theme. For customization requests or support, please contact the development team.
+GraphQL queries fetch featured collections, trending products, and individual product data. Cart mutations store the `cartId` in the Hydrogen session to power add-to-cart flows and the checkout handoff.
 
 ## License
 
-This theme is proprietary software. All rights reserved.
-
----
-
-**Built for the culture. Designed for success.**
-
+© Thrivv Theme. All rights reserved. Built for brands operating at the edge of luxury streetwear and technology.
